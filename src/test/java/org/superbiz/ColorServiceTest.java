@@ -21,11 +21,15 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.superbiz.config.ConverterExtension;
 
+import javax.enterprise.inject.spi.Extension;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
@@ -58,7 +62,11 @@ public class ColorServiceTest extends Assert {
      */
     @Deployment
     public static WebArchive createDeployment() {
-        return ShrinkWrap.create(WebArchive.class).addClasses(ColorService.class, Color.class);
+        return ShrinkWrap.create(WebArchive.class)
+                .addPackages(true, "org.superbiz")
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsResource(new StringAsset(ConverterExtension.class.getName()), "services/" + Extension.class);
+
     }
 
     /**

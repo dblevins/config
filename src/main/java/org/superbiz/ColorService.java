@@ -16,13 +16,18 @@
  */
 package org.superbiz;
 
+import org.superbiz.config.Config;
+
 import javax.ejb.Lock;
 import javax.ejb.Singleton;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+
+import java.io.File;
 
 import static javax.ejb.LockType.READ;
 import static javax.ejb.LockType.WRITE;
@@ -34,6 +39,14 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 public class ColorService {
 
     private String color;
+
+    @Config("user.home")
+    @Inject
+    private File home;
+
+    @Config("user.home")
+    @Inject
+    private Awesomeness awesomeness;
 
     public ColorService() {
         this.color = "white";
